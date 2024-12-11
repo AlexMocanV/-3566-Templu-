@@ -1,0 +1,86 @@
+#include <bits/stdc++.h>
+#include <string>
+std::ifstream fin("templu.in");
+std::ofstream fout("templu.out");
+int n,l;
+std::vector<std::string>v;
+std::string total;
+bool cmp(std::string a,std::string b)
+{
+    for(int i=0;i<std::min(a.length(),b.length());i++)
+    {
+        if(a[i]>b[i])
+            return false;
+        else if(a[i]<b[i])
+            return true;
+    }
+    if(a.length()>b.length())
+    {
+        int m=b.length();
+        while(m<a.length()){
+            if(a[m]>b[b.length()-1])
+                return true;
+            if(a[m]<b[b.length()-1])
+                return false;
+            m++;
+        }
+    }
+    else
+    {
+        int m=a.length();
+        while(m<b.length()){
+            if(b[m]>a[a.length()-1])
+                return true;
+            if(b[m]<a[a.length()-1])
+                return false;
+            m++;
+        }
+    }
+    return true;
+}
+int main()
+{
+    long long s,scad=0,next=0,sum=0;
+    fin>>n>>l;
+    // incepe cu n o matrice de l*l;
+    for(int i=0;i<l/2;i++)
+    {
+        scad=0,next=0;
+        for(int d=0;d<i;d++)
+        {
+            scad+=2;
+            next+=(n+d)*2;
+        }
+        s=(n+i)*(l-scad)+next;
+        //fout<<s<<' ';
+        sum+=s*2;
+        std::string str=std::to_string(s);
+        v.push_back(str);
+        v.push_back(str);
+    }
+    if(l%2==1){
+        std::string str=std::to_string(s+1);
+        sum+=s+1;
+        v.push_back(str);
+    }
+    std::string str=std::to_string(sum);
+    v.push_back(str);
+    std::sort(v.begin(),v.end(),cmp);
+    for(int i=0;i<v.size();i++)
+    {
+        fout<<v[i];
+        total+=v[i];
+    }
+    fout<<'\n';
+    int maxi=0;
+    for(int i=0;i<total.length()-1;i++)
+    {
+        std::string nr;
+        nr+=total[i];
+        nr+=total[i+1];
+        int nou=stoi(nr);
+        maxi=std::max(maxi,nou);
+    }
+    fout<<maxi;
+    return 0;
+}
